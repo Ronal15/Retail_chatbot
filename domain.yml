@@ -1,0 +1,133 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - thank
+  - check_order_status
+  - file_complaint
+  - check_complaint_status
+  - escalate_to_human
+  - request_recommendations
+  - provide_email
+  - provide_tracking_number
+  - provide_complaint_type
+  - provide_complaint_details
+  - out_of_scope
+
+entities:
+  - email
+  - tracking_number
+  - complaint_type
+  - complaint_details
+  - category
+  - complaint_id
+
+slots:
+  email:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: email
+  tracking_number:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: tracking_number
+  complaint_type:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: complaint_type
+  complaint_details:
+    type: text
+    mappings:
+      - type: from_text
+  category:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: category
+  complaint_id:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: complaint_id
+  # FIXED: Added mappings for fallback_count
+  fallback_count:
+    type: categorical
+    values:
+      - 0
+      - 1
+      - 2
+      - 3
+    initial_value: 0
+    mappings:
+      - type: custom
+        action: action_default_fallback
+
+responses:
+  utter_greet:
+    - text: "👋 Hello! How can I help you today?"
+  utter_goodbye:
+    - text: "👋 Goodbye! Have a great day!"
+  utter_thanks:
+    - text: "😊 You're welcome!"
+  utter_ask_how_can_help:
+    - text: "What can I do for you?"
+  utter_ask_email_for_orders:
+    - text: "Please provide your email address so I can look up your orders."
+  utter_ask_tracking_number:
+    - text: "What's your order tracking number? (e.g., TRACK-12345)"
+  utter_ask_email_for_complaint:
+    - text: "To check your complaint status, I'll need your email address."
+  utter_ask_complaint_reference:
+    - text: "Please provide your complaint reference number."
+  utter_ask_complaint_type:
+    - text: "What type of complaint is this? (delivery, product issue, billing dispute, service concern)"
+  utter_ask_complaint_details:
+    - text: "Please describe your complaint"
+  utter_ask_email_for_escalation:
+    - text: "To escalate your complaint, I need your email address."
+  utter_ask_email_for_recs:
+    - text: "Please provide your email for personalized recommendations."
+  utter_order_status_header:
+    - text: "Let me check your order status..."
+  utter_complaint_status_header:
+    - text: "Let me check your complaint status"
+  utter_recommendation_header:
+    - text: "Here are some personalized recommendations for you:"
+  utter_complaint_confirmation:
+    - text: "Your complaint has been submitted successfully!"
+  utter_out_of_scope:
+    - text: "I'm sorry, I can't help with that. Can I assist you with anything else?"
+    - text: "I'm still learning! Try asking about your order, complaint status, or product suggestions."
+
+actions:
+  - action_validate_slots
+  - action_handle_order_status
+  - action_handle_complaint_status
+  - action_handle_escalation
+  - action_handle_recommendations
+  - action_utter_ask_complaint_type
+  - action_utter_ask_complaint_details
+  - action_check_order_status
+  - action_check_complaint_status
+  - action_escalate_to_agent
+  - action_recommend_products
+  - action_submit_complaint_form
+  - action_default_fallback
+  - action_reset_slots
+
+# FIXED: Removed invalid 'validate' key from form
+forms:
+  complaint_form:
+    required_slots:
+      - tracking_number
+      - complaint_type
+      - complaint_details
+      - email
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
