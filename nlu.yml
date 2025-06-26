@@ -1,0 +1,169 @@
+version: "3.1"
+
+nlu:
+- intent: greet
+  examples: |
+    - Hi
+    - Hello
+    - Good morning
+    - Hey there!
+    - What's up?
+
+- intent: goodbye
+  examples: |
+    - Bye
+    - See you later
+    - Goodbye
+    - Have a nice day
+    - I'm done
+
+- intent: provide_email
+  examples: |
+    - My email is [kane@gmail.com](email)
+    - Email: [randy@gmail.com](email)
+    - It's [lita@gmail.com](email)
+    - [trish@gmail.com](email)
+    - You can reach me at [vince@gmail.com](email)
+
+
+
+- intent: provide_complaint_details
+  examples: |
+    - The package arrived completely destroyed
+    - Items were broken when I opened the box
+    - I received the wrong color
+    - Delivery is 2 weeks late
+    - Missing items from my order
+    - The product stopped working after 2 days
+    - Water damage on the package contents
+    - Received size M instead of L
+    - Item doesn't match the website description
+    - Defective charging port
+    - [The courier threw the package](complaint_details)
+    - [Wrong model number received](complaint_details)
+    - [Broken screen on arrival](complaint_details)
+    - The package arrived damaged
+    - I received the wrong item
+    - My order is missing parts
+    - The product is defective
+    - I was charged twice
+    - The agent was rude to me
+    - Late delivery
+    - Damaged goods
+    - Incorrect billing
+    - [delivery](complaint_type)
+    - [product issue](complaint_type)
+    - [billing dispute](complaint_type)
+    - [service concern](complaint_type)
+
+- intent: provide_tracking_number
+  examples: |
+    - Order ID: [TRACK-4d8a7b](tracking_number)
+    - Tracking: [TRACK-def456](tracking_number)
+    - [TRACK-xyz789](tracking_number)
+    - [TRACK-12345](tracking_number)
+    - My tracking number is [TRACK-67890](tracking_number)
+    - [TRACK-abcde](tracking_number)
+    - It's [TRACK-54321](tracking_number)
+    - Order reference [TRACK-98765](tracking_number)
+    - Tracking ID: [TRACK-13579](tracking_number)
+    - [TRACK-24680](tracking_number)
+    - Here's my tracking code: [TRACK-11223](tracking_number)
+
+- intent: provide_complaint_type
+  examples: |
+    - delivery problem
+    - shipping delay
+    - damaged item
+    - incorrect billing
+    - poor customer service
+    - wrong item received
+    - defective product
+    - overcharged
+    - rude representative
+
+- intent: file_complaint
+  examples: |
+    - I want to file a complaint
+    - Report damaged product
+    - Wrong item received
+    - My order is late
+    - I need to return something
+    - Item is defective
+    - Escalate my issue
+
+- intent: request_recommendations
+  examples: |
+    - Suggest products for me
+    - What would you recommend?
+    - Show me electronics deals
+    - I need fitness gear suggestions
+    - Kitchen appliance recommendations
+    - What's new in [electronics](category)?
+    - Show [gaming](category) products
+    - Recommend something in [kitchen](category)
+
+- intent: escalate_to_human
+  examples: |
+    - I want to speak to a human
+    - Transfer to agent
+    - Connect me to customer service
+    - Can I talk to a real person?
+    - Manager please
+    - This needs human assistance
+    - Escalate my case
+
+- intent: thank
+  examples: |
+    - Thanks!
+    - Thank you
+    - Appreciate it
+    - That's helpful
+    - Great, thanks!
+
+- intent: check_complaint_status
+  examples: |
+    - Check my complaint status
+    - What's happening with my issue?
+    - Any updates on my complaint?
+    - How's my return going?
+    - Is my refund processed?
+
+- intent: check_order_status
+  examples: |
+    - I need to track an order
+    - Where's my package?
+    - Can you help me find my order?
+    - I want to track a shipment
+    - Order tracking help
+    - Help me locate my purchase
+    - Find my recent order
+    - Track delivery status    
+    - What's the status of [TRACK-123456]?
+    - Has my order [TRACK-789abc] shipped?
+    - Where is my order [TRACK-def456]?
+    - Is order [TRACK-abc123] delivered?
+    - Status update for [TRACK-xyz789]
+    - Tracking info for [TRACK-456def]
+    - When will [TRACK-9c2e1f] arrive?
+    - Did you ship [TRACK-4d8a7b] yet?
+
+- intent: out_of_scope
+  examples: |
+    - What's the weather today?
+    - Tell me a joke
+    - How old are you?
+    - Who created you?
+    - What's 2+2?
+    - Where do you live?
+
+- intent: nlu_fallback
+  examples: |
+    - asdfghjkl
+    - 123456789
+    - 😊🤔💬
+    - what the heck?
+    - gibberish text
+    - random words without meaning
+    - I don't understand you
+    - That makes no sense

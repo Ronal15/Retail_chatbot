@@ -1,0 +1,188 @@
+version: "3.1"
+
+stories:
+
+# ----- ORDER TRACKING FLOWS -----
+- story: Track order happy path
+  steps:
+  - intent: check_order_status
+    entities:
+      - tracking_number: "TRACK-9c2e1f"
+      - email: "user@example.com"
+  - action: action_handle_order_status
+  - action: action_check_order_status
+  - action: action_listen
+
+- story: Track order step by step
+  steps:
+  - intent: check_order_status
+  - action: action_handle_order_status
+  - intent: provide_email
+    entities:
+      - email: "user@example.com"
+  - action: action_handle_order_status
+  - intent: provide_tracking_number
+    entities:
+      - tracking_number: "TRACK-123abc"
+  - action: action_check_order_status
+
+- story: Track order missing tracking number
+  steps:
+  - intent: check_order_status
+    entities:
+      - email: "user@example.com"
+  - action: action_handle_order_status
+  - intent: provide_tracking_number
+    entities:
+      - tracking_number: "TRACK-4d8a7b"
+  - action: action_check_order_status
+  - action: action_listen
+
+- story: Track order missing email
+  steps:
+  - intent: check_order_status
+    entities:
+      - tracking_number: "TRACK-4d8a7b"
+  - action: action_handle_order_status
+  - intent: provide_email
+    entities:
+      - email: "user@example.com"
+  - action: action_check_order_status
+  - action: action_listen
+
+# ----- COMPLAINT MANAGEMENT FLOWS -----
+- story: File complaint
+  steps:
+  - intent: file_complaint
+  - action: action_reset_slots
+  - action: complaint_form
+  - active_loop: complaint_form
+  - intent: provide_email
+    entities:
+      - email: "user@example.com"
+  - intent: provide_tracking_number
+    entities:
+      - tracking_number: "TRACK-123abc"
+  - intent: provide_complaint_type
+    entities:
+      - complaint_type: "delivery related"
+      - complaint_type: "item related"
+      - complaint_type: "quality issue"
+  - intent: provide_complaint_details
+    entities:
+      - complaint_details: "Package arrived damaged"
+  - action: action_submit_complaint_form
+  - action: action_listen
+
+- story: Check complaint status
+  steps:
+  - intent: check_complaint_status
+    entities:
+      - tracking_number: "TRACK-789xyz"
+      - email: "user@example.com"
+  - action: action_handle_complaint_status
+  - action: action_check_complaint_status
+  - action: action_listen
+
+# ----- RECOMMENDATION FLOWS -----
+- story: Recommendations with email
+  steps:
+  - intent: request_recommendations
+    entities:
+      - email: "user@example.com"
+  - action: action_handle_recommendations
+  - action: action_recommend_products
+  - action: action_listen
+
+- story: Recommendations without email
+  steps:
+  - intent: request_recommendations
+  - action: action_handle_recommendations
+  - intent: provide_email
+    entities:
+      - email: "user@example.com"
+  - action: action_recommend_products
+  - action: action_listen
+
+# ----- ESCALATION FLOWS -----
+- story: Escalation with email
+  steps:
+  - intent: escalate_to_human
+    entities:
+      - email: "user@example.com"
+      - complaint_id: "4f7717b3-84aa-460d-b9e5-fea3dc2afb80"
+  - action: action_handle_escalation
+  - action: action_escalate_to_agent
+  - action: action_listen
+
+- story: Escalation without email
+  steps:
+  - intent: escalate_to_human
+    entities:
+      - complaint_id: "4f7717b3-84aa-460d-b9e5-fea3dc2afb80"
+  - action: action_handle_escalation
+  - intent: provide_email
+    entities:
+      - email: "user@example.com"
+  - action: action_escalate_to_agent
+  - action: action_listen
+
+# ----- MIXED FLOWS -----
+- story: Complaint to escalation
+  steps:
+  - intent: file_complaint
+  - action: action_reset_slots
+  - action: complaint_form
+  - active_loop: complaint_form
+  - intent: provide_email
+    entities:
+      - email: "user@example.com"
+  - intent: provide_tracking_number
+    entities:
+      - tracking_number: "TRACK-456def"
+  - intent: provide_complaint_type
+    entities:
+      - complaint_type: "billing"
+  - intent: provide_complaint_details
+    entities:
+      - complaint_details: "Charged twice for same order"
+  - action: action_submit_complaint_form
+  - slot_was_set:
+      - complaint_id: "4f7717b3-84aa-460d-b9e5-fea3dc2afb80"
+  - intent: escalate_to_human
+  - action: action_handle_escalation
+  - action: action_escalate_to_agent
+  - action: action_listen
+
+- story: Order to recommendation
+  steps:
+  - intent: check_order_status
+    entities:
+      - tracking_number: "TRACK-456def"
+      - email: "user@example.com"
+  - action: action_handle_order_status
+  - action: action_check_order_status
+  - intent: request_recommendations
+  - action: action_handle_recommendations
+  - action: action_recommend_products
+  - action: action_listen
+
+# ----- BASIC CONVERSATION FLOWS -----
+- story: Greeting path
+  steps:
+  - intent: greet
+  - action: action_reset_slots
+  - action: utter_greet
+  - action: utter_ask_how_can_help
+
+- story: Goodbye path
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+  - action: action_reset_slots
+
+- story: Out-of-scope handling
+  steps:
+  - intent: out_of_scope
+  - action: utter_out_of_scope
+  - action: action_default_fallback
